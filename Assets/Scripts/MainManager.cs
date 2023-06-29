@@ -18,10 +18,15 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
+    public Text nameText;
+             
+
     // Start is called before the first frame update
     void Start()
     {
+        
+        nameText.text = "Name : " + MenuUI.Instance.playerName;
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -59,7 +64,7 @@ public class MainManager : MonoBehaviour
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
-        }
+        }        
     }
 
     void AddPoint(int point)
@@ -73,4 +78,5 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+      
 }
