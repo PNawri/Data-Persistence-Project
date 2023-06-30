@@ -23,6 +23,7 @@ public class MainManager : MonoBehaviour
     public Text topScoreNameDisplay;
     public Text topScoreDisplay;
     public Button menuButton;
+    public Image gameOverBG;
 
     private int topScoreSaved;
              
@@ -32,7 +33,7 @@ public class MainManager : MonoBehaviour
     {
         LoadData();
         
-        nameText.text = "Name : " + MenuUI.Instance.playerName;
+        nameText.text = "Name : " + PlayerName.Instance.playerName;
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -84,7 +85,8 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        //menuButton.gameObject.SetActive(true);
+        menuButton.gameObject.SetActive(true);
+        gameOverBG.gameObject.SetActive(true);
 
         if (m_Points > topScoreSaved)
          {
@@ -108,7 +110,7 @@ public class MainManager : MonoBehaviour
     {
         SaveData data = new SaveData();
         data.topScore = m_Points;
-        data.topScoreName = MenuUI.Instance.playerName;
+        data.topScoreName = PlayerName.Instance.playerName;
 
         string json = JsonUtility.ToJson(data);
 

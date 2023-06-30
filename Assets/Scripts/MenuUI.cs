@@ -8,25 +8,11 @@ using UnityEditor;
 
 public class MenuUI : MonoBehaviour
 {
-    public static MenuUI Instance;
     public TMPro.TMP_InputField inputName;
-    public string playerName;
-
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
+        
     public void StartNew()
     {
-        playerName = inputName.text;
+        GetName();
         SceneManager.LoadScene(1);
     }
 
@@ -37,6 +23,11 @@ public class MenuUI : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void GetName()
+    {
+        PlayerName.Instance.playerName = inputName.text;
     }
 
 }
