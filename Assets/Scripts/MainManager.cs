@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
@@ -19,11 +20,17 @@ public class MainManager : MonoBehaviour
     private bool m_GameOver = false;
 
     public Text nameText;
+    public Text topScoreNameDisplay;
+    public Text topScoreDisplay;
+    public Button menuButton;
+
+    private int topScoreSaved;
              
 
     // Start is called before the first frame update
     void Start()
     {
+        LoadData();
         
         nameText.text = "Name : " + MenuUI.Instance.playerName;
 
@@ -77,6 +84,49 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        //menuButton.gameObject.SetActive(true);
+
+        if (m_Points > topScoreSaved)
+         {
+            SaveScore();
+         }
     }
-      
+
+    public void BacktoMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    [System.Serializable]
+    class SaveData
+    {
+        public int topScore;
+        public string topScoreName;
+    }
+
+    public void SaveScore()
+    {
+        SaveData data = new SaveData();
+        data.topScore = m_Points;
+        data.topScoreName = MenuUI.Instance.playerName;
+
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadData()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            topScoreDisplay.text = $"{data.topScore}";
+            topScoreNameDisplay.text = data.topScoreName;
+            topScoreSaved = data.topScore;
+        }
+    }
+
 }
